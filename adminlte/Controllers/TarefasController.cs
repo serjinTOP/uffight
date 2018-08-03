@@ -28,6 +28,13 @@ namespace adminlte.Controllers
             return Json(tasks, JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult TaskList()
+        {
+            var tarefasList = db.Tarefas.ToList().OrderBy(x => x.Robo).ThenBy(x => x.Urgencia).ThenBy(x => x.Status);
+
+            return Json(tarefasList, JsonRequestBehavior.AllowGet);
+        }
+
         [HttpPost]
         public JsonResult Save(string tarefa, string robo, string urgencia, string status)
         {

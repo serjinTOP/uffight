@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using adminlte.Models;
+using System.Data.Entity.Validation;
 
 namespace adminlte.Controllers
 {
@@ -17,111 +18,52 @@ namespace adminlte.Controllers
         // GET: Eventos
         public ActionResult Index()
         {
-            return View(db.Eventos.ToList());
-        }
-
-        // GET: Eventos/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Eventos eventos = db.Eventos.Find(id);
-            if (eventos == null)
-            {
-                return HttpNotFound();
-            }
-            return View(eventos);
-        }
-
-        // GET: Eventos/Create
-        public ActionResult Create()
-        {
             return View();
         }
 
-        // POST: Eventos/Create
-        // Para se proteger de mais ataques, ative as propriedades específicas a que você quer se conectar. Para 
-        // obter mais detalhes, consulte https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "EventosId,Evento,Data")] Eventos eventos)
+        public JsonResult Save(string evento, DateTime data)
         {
-            if (ModelState.IsValid)
+            try
             {
+                var eventos = new Eventos();
+                eventos.Evento = evento;
+                eventos.Data = data;
+
                 db.Eventos.Add(eventos);
                 db.SaveChanges();
-                return RedirectToAction("Index");
-            }
 
-            return View(eventos);
+                Response.Redirect(Url.Action("Index", "Eventos"));
+            }
+            catch (DbEntityValidationException e)
+            {
+                foreach (var eve in e.EntityValidationErrors)
+                {
+                    Console.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+                        eve.Entry.Entity.GetType().Name, eve.Entry.State);
+                    foreach (var ve in eve.ValidationErrors)
+                    {
+                        Console.WriteLine("- Property: \"{0}\", Error: \"{1}\"",
+                            ve.PropertyName, ve.ErrorMessage);
+                    }
+                }
+                throw;
+            }
+            return null;
         }
 
-        // GET: Eventos/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult NextEvent()
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Eventos eventos = db.Eventos.Find(id);
-            if (eventos == null)
-            {
-                return HttpNotFound();
-            }
-            return View(eventos);
+            var events = db.Eventos.ToList().OrderBy(x => x.Data).First();
+            var dataEvento = events.Data.ToString("dd/MM/yyyy");
+            var evento = events.Evento;
+
+            List<string> eventoData = new List<string>();
+            eventoData.Add(dataEvento);
+            eventoData.Add(evento);
+
+            return Json(eventoData, JsonRequestBehavior.AllowGet);
         }
 
-        // POST: Eventos/Edit/5
-        // Para se proteger de mais ataques, ative as propriedades específicas a que você quer se conectar. Para 
-        // obter mais detalhes, consulte https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "EventosId,Evento,Data")] Eventos eventos)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(eventos).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(eventos);
-        }
-
-        // GET: Eventos/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Eventos eventos = db.Eventos.Find(id);
-            if (eventos == null)
-            {
-                return HttpNotFound();
-            }
-            return View(eventos);
-        }
-
-        // POST: Eventos/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Eventos eventos = db.Eventos.Find(id);
-            db.Eventos.Remove(eventos);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
     }
 }

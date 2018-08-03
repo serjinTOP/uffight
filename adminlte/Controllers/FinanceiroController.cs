@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using adminlte.Models;
+using System.Data.Entity.Validation;
 
 namespace adminlte.Controllers
 {
@@ -30,17 +31,36 @@ namespace adminlte.Controllers
             return Json(total, JsonRequestBehavior.AllowGet);
         }
 
-        //public ActionResult NextEvent()
-        //{
-        //    var events = db.Eventos.ToList().OrderBy(x => x.Data).First();
-        //    var dataEvento = events.Data.ToString("dd/MM/yyyy");
-        //    var evento = events.Evento;
+        [HttpPost]
+        public JsonResult Save(decimal valor, string motivo, string tipo)
+        {
+            try
+            {
+                var movFinanceira = new Financeiro();
+                movFinanceira.Valor = valor;
+                movFinanceira.Motivo = motivo;
+                movFinanceira.Tipo = tipo;
 
-        //    List<string> eventoData = new List<string>();
-        //    eventoData.Add(dataEvento);
-        //    eventoData.Add(evento);
+                db.Financeiro.Add(movFinanceira);
+                db.SaveChanges(); 
 
-        //    return Json(eventoData, JsonRequestBehavior.AllowGet);
-        //}
+                Response.Redirect(Url.Action("Index", "Financeiro"));
+            }
+            catch (DbEntityValidationException e)
+            {
+                foreach (var eve in e.EntityValidationErrors)
+                {
+                    Console.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+                        eve.Entry.Entity.GetType().Name, eve.Entry.State);
+                    foreach (var ve in eve.ValidationErrors)
+                    {
+                        Console.WriteLine("- Property: \"{0}\", Error: \"{1}\"",
+                            ve.PropertyName, ve.ErrorMessage);
+                    }
+                }
+                throw;
+            }
+            return null;
+        }
     }
 }

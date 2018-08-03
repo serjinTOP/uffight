@@ -1,39 +1,42 @@
-﻿@model IEnumerable<adminlte.Models.Eventos>
-
-@{
-    ViewBag.Title = "Index";
+﻿@{
+ViewBag.Title = "UFFight Robótica";
+Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            Eventos
+            <small></small>
+        </h1>
+    </section>
+    <form action="/Eventos/Save" method="post">
+        <div class="box-body">
+            <div class="form-group">
+                <label>Evento</label>
+                <input type="text" class="form-control" name="evento" placeholder="Evento">
+            </div>
+            <div class="form-group">
+                <label>Data</label>
+                <input type="date" class="form-control" name="data" placeholder="Data">
+            </div>
+            <div class="box-footer">
+                <button type="submit" class="btn btn-primary">Salvar</button>
+            </div>
+        </div>
+    </form>
+    <!-- /.content -->
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Evento)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Data)
-        </th>
-        <th></th>
-    </tr>
+</div>
+<!-- /.content-wrapper -->
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Evento)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Data)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.EventosId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.EventosId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.EventosId })
-        </td>
-    </tr>
+@section Scripts 
+{
+    @Scripts.Render("~/bundles/dashboard1")
 }
 
-</table>
+<script>
+
+</script>

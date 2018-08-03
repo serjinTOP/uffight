@@ -1,6 +1,6 @@
 ﻿@{
-    ViewBag.Title = "UFFight Robótica";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+ViewBag.Title = "UFFight Robótica";
+Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <!-- Content Wrapper. Contains page content -->
@@ -48,13 +48,13 @@
                 <!-- small box -->
                 <div class="small-box bg-yellow">
                     <div class="inner">
-                        <h3>44</h3>
-                        <p>User Registrations</p>
+                        <h3 id="data"></h3>
+                        <p id="evento"></p>
                     </div>
                     <div class="icon">
                         <i class="ion ion-calendar"></i>
                     </div>
-                    <a href="#" class="small-box-footer">Leve-me lá! <i class="fa fa-arrow-circle-right"></i></a>
+                    <a href="Eventos/Index" class="small-box-footer">Leve-me lá! <i class="fa fa-arrow-circle-right"></i></a>
                 </div>
             </div>
             <!-- ./col -->
@@ -83,14 +83,25 @@
             }
         });
         $.ajax({
-        url: '@Url.Action("TotalMoney", "Financeiro")',
-        type: 'GET',
-        cache: false,
-        data: JSON.stringify(),
-        success: function(data) {
-            document.getElementById("money").innerHTML = data;
-        }
-    });
+            url: '@Url.Action("TotalMoney", "Financeiro")',
+            type: 'GET',
+            cache: false,
+            data: JSON.stringify(),
+            success: function(data) {
+                document.getElementById("money").innerHTML = data;
+            }
+        });
+        $.ajax({
+            url: '@Url.Action("NextEvent", "Eventos")',
+            type: 'GET',
+            cache: false,
+            data: JSON.stringify(),
+            success: function(data) {
+                document.getElementById("data").innerHTML = data[0];
+                document.getElementById("evento").innerHTML = data[1];
+            }
+        });
+
 
     }
 </script>

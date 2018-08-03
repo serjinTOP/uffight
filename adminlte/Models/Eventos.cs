@@ -15,7 +15,7 @@ namespace adminlte.Models
         public int EventosId { get; set; }
 
         [Column("EVENTO")]
-        public decimal Evento { get; set; }
+        public string Evento { get; set; }
 
         [Column("DATA")]
         public DateTime Data { get; set; }
