@@ -171,6 +171,7 @@
     <Compile Include="Controllers\CalendarController.cs" />
     <Compile Include="Controllers\ChartsController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
+    <Compile Include="Controllers\EventosController.cs" />
     <Compile Include="Controllers\ExamplesController.cs" />
     <Compile Include="Controllers\FinanceiroController.cs" />
     <Compile Include="Controllers\FormsController.cs" />
@@ -188,6 +189,7 @@
     <Compile Include="Helpers\HTMLHelperExtensions.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Context.cs" />
+    <Compile Include="Models\Eventos.cs" />
     <Compile Include="Models\Financeiro.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -4233,6 +4235,11 @@
     <Content Include="Views\Financeiro\Details.cshtml" />
     <Content Include="Views\Financeiro\Edit.cshtml" />
     <Content Include="Views\Financeiro\Index.cshtml" />
+    <Content Include="Views\Eventos\Create.cshtml" />
+    <Content Include="Views\Eventos\Delete.cshtml" />
+    <Content Include="Views\Eventos\Details.cshtml" />
+    <Content Include="Views\Eventos\Edit.cshtml" />
+    <Content Include="Views\Eventos\Index.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

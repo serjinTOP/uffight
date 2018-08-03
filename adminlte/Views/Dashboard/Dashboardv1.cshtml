@@ -16,7 +16,7 @@
     <section class="content">
         <!-- Small boxes (Stat box) -->
         <div class="row">
-            <div class="col-lg-3 col-xs-6">
+            <div class="col-sm-4">
                 <!-- small box -->
                 <div class="small-box bg-aqua">
                     <div class="inner">
@@ -30,21 +30,21 @@
                 </div>
             </div>
             <!-- ./col -->
-            <div class="col-lg-3 col-xs-6">
+            <div class="col-sm-4">
                 <!-- small box -->
                 <div class="small-box bg-green">
                     <div class="inner">
-                        <h3>53<sup style="font-size: 20px">%</sup></h3>
-                        <p>Bounce Rate</p>
+                        <h3 id="money"><sup style="font-size: 20px">%</sup></h3>
+                        <p>Em Caixa</p>
                     </div>
                     <div class="icon">
-                        <i class="ion ion-stats-bars"></i>
+                        <i class="ion ion-cash"></i>
                     </div>
-                    <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                    <a href="Financeiro/Index" class="small-box-footer">Leve-me lá! <i class="fa fa-arrow-circle-right"></i></a>
                 </div>
             </div>
             <!-- ./col -->
-            <div class="col-lg-3 col-xs-6">
+            <div class="col-sm-4">
                 <!-- small box -->
                 <div class="small-box bg-yellow">
                     <div class="inner">
@@ -52,23 +52,9 @@
                         <p>User Registrations</p>
                     </div>
                     <div class="icon">
-                        <i class="ion ion-person-add"></i>
+                        <i class="ion ion-calendar"></i>
                     </div>
-                    <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-                </div>
-            </div>
-            <!-- ./col -->
-            <div class="col-lg-3 col-xs-6">
-                <!-- small box -->
-                <div class="small-box bg-red">
-                    <div class="inner">
-                        <h3>65</h3>
-                        <p>Unique Visitors</p>
-                    </div>
-                    <div class="icon">
-                        <i class="ion ion-pie-graph"></i>
-                    </div>
-                    <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                    <a href="#" class="small-box-footer">Leve-me lá! <i class="fa fa-arrow-circle-right"></i></a>
                 </div>
             </div>
             <!-- ./col -->
@@ -86,7 +72,7 @@
 }
 
 <script>
-    window.onload = function getTasks(){
+    window.onload = function getAjaxes(){
         $.ajax({
             url: '@Url.Action("NumOfTasks", "Tarefas")',
             type: 'GET',
@@ -95,6 +81,16 @@
             success: function(data){
                 document.getElementById("tasks").innerHTML = data;
             }
-        })
+        });
+        $.ajax({
+        url: '@Url.Action("TotalMoney", "Financeiro")',
+        type: 'GET',
+        cache: false,
+        data: JSON.stringify(),
+        success: function(data) {
+            document.getElementById("money").innerHTML = data;
+        }
+    });
+
     }
 </script>
