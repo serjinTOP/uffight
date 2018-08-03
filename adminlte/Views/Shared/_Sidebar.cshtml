@@ -1,0 +1,45 @@
+﻿    <!-- Left side column. contains the logo and sidebar -->
+    <aside class="main-sidebar">
+        <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar">
+            <!-- sidebar menu: : style can be found in sidebar.less -->
+            <ul class="sidebar-menu" data-widget="tree">
+                <li class="header">MENU</li>
+                <li class="@Html.IsSelected(controller: "Dashboard") treeview">
+                    <a href="@Url.Action("Dashboardv1", "Dashboard")">
+                        <i class="fa fa-android"></i> <span>Início</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li class="@Html.IsSelected(action: "Dashboardv1")"><a href="@Url.Action("Dashboardv1", "Dashboard")"><i class="fa fa-android"></i> Início</a></li>
+                    </ul>
+                </li>
+                <li class="@Html.IsSelected(controller: "Tarefas") treeview">
+                    <a href="@Url.Action("Index", "Tarefas")">
+                        <i class="fa fa-android"></i> <span>Tarefas</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li class="@Html.IsSelected(action: "Index")"><a href="@Url.Action("Index", "Tarefas")"><i class="fa fa-android"></i> Tarefas</a></li>
+                    </ul>
+                </li>
+                <li class="@Html.IsSelected(controller: "Financeiro") treeview">
+                    <a href="@Url.Action("Index", "Financeiro")">
+                        <i class="fa fa-android"></i> <span>Financeiro</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li class="@Html.IsSelected(action: "Index")"><a href="@Url.Action("Index", "Financeiro")"><i class="fa fa-android"></i> Financeiro</a></li>
+                    </ul>
+                </li>                
+
+            </ul>
+        </section>
+        <!-- /.sidebar -->
+    </aside>
