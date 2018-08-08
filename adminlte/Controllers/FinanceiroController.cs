@@ -31,6 +31,13 @@ namespace adminlte.Controllers
             return Json(total, JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult MoneyList()
+        {
+            var moneyList = db.Financeiro.ToList().OrderBy(x => x.Tipo);
+
+            return Json(moneyList, JsonRequestBehavior.AllowGet);
+        }
+
         [HttpPost]
         public JsonResult Save(decimal valor, string motivo, string tipo)
         {

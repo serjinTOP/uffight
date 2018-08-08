@@ -21,6 +21,14 @@ namespace adminlte.Controllers
             return View();
         }
 
+        public ActionResult EventsList()
+        {
+            var events = db.Eventos.ToList().OrderBy(x => x.Data);
+
+
+            return Json(events, JsonRequestBehavior.AllowGet);
+        }
+
         [HttpPost]
         public JsonResult Save(string evento, DateTime data)
         {

@@ -12,5 +12,7 @@ namespace adminlte.Models
         public DbSet<Tarefas> Tarefas { get; set; }
         public DbSet<Financeiro> Financeiro { get; set; }
         public DbSet<Eventos> Eventos { get; set; }
+
+        
     }
 }

@@ -19,5 +19,7 @@ namespace adminlte.Models
 
         [Column("DATA")]
         public DateTime Data { get; set; }
+
+        public String TxData { get { return Data.ToString("dd/MM/yyyy"); } }
     }
 }

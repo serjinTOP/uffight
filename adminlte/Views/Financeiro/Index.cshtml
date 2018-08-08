@@ -35,6 +35,35 @@ Layout = "~/Views/Shared/_Layout.cshtml";
 			</div>
 		</div>
 	</form>
+	<div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                  <div class="box-header">
+                        <h3 class="box-title">Movimentações Financeiras</h3>
+                        <div class="box-tools">
+                            <div class="input-group input-group-sm" style="width: 150px;">
+                                <div class="input-group-btn">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body table-responsive no-padding">
+                        <table class="table table-hover" id="money_table">
+                            <tr>
+                                <th>Motivo</th>
+                                <th>Valor</th>
+                            </tr>
+                        </table>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+        </div>
+    <!-- /.content -->
+
+  </div>
 	<!-- /.content -->
 
 </div>
@@ -46,5 +75,23 @@ Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <script>
-
+    window.onload = function getAjaxes(){
+      $.ajax({
+        url: '@Url.Action("MoneyList", "Financeiro")',
+        type: 'GET',
+        cache: false,
+        data: JSON.stringify(),
+        success: function(data){
+          var money_data = '';
+          $.each(data, function(key, value){
+            money_data += '<tr>';
+            money_data += '<td>'  + value.Motivo+'</td>';
+            money_data += '<td>'+ 'R$ ' + value.Valor+'</td>';
+            money_data += '</tr>';
+          });
+          $('#money_table').append(money_data);
+        }
+      });
+      //console.log(teste);
+    }
 </script>
