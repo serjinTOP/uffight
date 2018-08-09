@@ -43,6 +43,7 @@ Layout = "~/Views/Shared/_Layout.cshtml";
                     <div class="box-body table-responsive no-padding">
                         <table class="table table-hover" id="money_table">
                             <tr>
+                                <th>ID</th>
                                 <th>Evento</th>
                                 <th>Data</th>
                             </tr>
@@ -74,14 +75,27 @@ Layout = "~/Views/Shared/_Layout.cshtml";
           var event_data = '';
           $.each(data, function(key, value){
             event_data += '<tr>';
+            event_data += '<td>'  + value.EventosId+'</td>';
             event_data += '<td>'  + value.Evento+'</td>';
             event_data += '<td>' + value.TxData +'</td>';
+            event_data += '<td><button type="submit" onclick="Delete(' + value.EventosId + ')" class="btn btn-primary">Deletar</button></td>';
             event_data += '</tr>';
           });
-          console.log(data);
           $('#money_table').append(event_data);
         }
       });
       //console.log(teste);
+    }
+
+    function Delete(id){
+        $.ajax ({
+        type : "POST",
+        url : '@Url.Action("Delete", "Eventos")',
+        data : {id: id},
+        dataType : "json",
+        success: function(){
+            location.reload();
+        }
+});
     }
 </script>

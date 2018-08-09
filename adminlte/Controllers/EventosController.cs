@@ -62,7 +62,7 @@ namespace adminlte.Controllers
 
         public ActionResult NextEvent()
         {
-            var events = db.Eventos.ToList().OrderBy(x => x.Data).First();
+            var events = db.Eventos.ToList().Where(x => x.Data >= DateTime.Today).OrderBy(x => x.Data).First();
             var dataEvento = events.Data.ToString("dd/MM/yyyy");
             var evento = events.Evento;
 
@@ -71,6 +71,18 @@ namespace adminlte.Controllers
             eventoData.Add(evento);
 
             return Json(eventoData, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult Delete (int id)
+        {
+            var delete = new Eventos { EventosId = id };
+            db.Eventos.Attach(delete);
+            db.Eventos.Remove(delete);
+            db.SaveChanges();
+
+            Response.Redirect(Url.Action("Index", "Eventos"));
+
+            return null;
         }
 
     }
