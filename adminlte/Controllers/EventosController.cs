@@ -66,6 +66,12 @@ namespace adminlte.Controllers
             var dataEvento = events.Data.ToString("dd/MM/yyyy");
             var evento = events.Evento;
 
+            if(events == null)
+            {
+                dataEvento = "-";
+                evento = "Sem eventos cadastrados";
+            }
+
             List<string> eventoData = new List<string>();
             eventoData.Add(dataEvento);
             eventoData.Add(evento);

@@ -69,5 +69,16 @@ namespace adminlte.Controllers
             }
             return null;
         }
+        public JsonResult Delete(int id)
+        {
+            var delete = new Financeiro { FinanceiroId = id };
+            db.Financeiro.Attach(delete);
+            db.Financeiro.Remove(delete);
+            db.SaveChanges();
+
+            Response.Redirect(Url.Action("Index", "Financeiro"));
+
+            return null;
+        }
     }
 }

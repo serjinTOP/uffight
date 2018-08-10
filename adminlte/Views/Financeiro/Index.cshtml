@@ -51,7 +51,9 @@ Layout = "~/Views/Shared/_Layout.cshtml";
                     <div class="box-body table-responsive no-padding">
                         <table class="table table-hover" id="money_table">
                             <tr>
+                                <th>ID</th>
                                 <th>Motivo</th>
+                                <th>Tipo</th>
                                 <th>Valor</th>
                             </tr>
                         </table>
@@ -85,13 +87,28 @@ Layout = "~/Views/Shared/_Layout.cshtml";
           var money_data = '';
           $.each(data, function(key, value){
             money_data += '<tr>';
+            money_data += '<td>'  + value.FinanceiroId+'</td>';
             money_data += '<td>'  + value.Motivo+'</td>';
+            money_data += '<td>'  + value.Tipo + '</td>';
             money_data += '<td>'+ 'R$ ' + value.Valor+'</td>';
+            money_data += '<td><button type="submit" onclick="Delete(' + value.FinanceiroId + ')" class="btn btn-primary">Deletar</button></td>';
             money_data += '</tr>';
           });
           $('#money_table').append(money_data);
         }
       });
       //console.log(teste);
+    }
+        function Delete(id){
+        $.ajax ({
+            type : "POST",
+            url : '@Url.Action("Delete", "Financeiro")',
+            data : {id: id},
+            dataType : "json",
+            success: function(){
+                window.location.reload();
+            }
+        });
+        window.location.reload();
     }
 </script>

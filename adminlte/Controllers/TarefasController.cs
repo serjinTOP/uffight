@@ -23,14 +23,14 @@ namespace adminlte.Controllers
 
         public ActionResult NumOfTasks()
         {
-            var tasks = db.Tarefas.ToList().Count();
+            var tasks = db.Tarefas.Where(x => x.Status != "Resolvida").ToList().Count();
 
             return Json(tasks, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult TaskList()
         {
-            var tarefasList = db.Tarefas.ToList().OrderBy(x => x.Robo).ThenBy(x => x.Urgencia).ThenBy(x => x.Status);
+            var tarefasList = db.Tarefas.Where(x => x.Status != "Resolvida").OrderBy(x => x.Robo).ThenBy(x => x.Urgencia).ThenBy(x => x.Status);
 
             return Json(tarefasList, JsonRequestBehavior.AllowGet);
         }
@@ -64,7 +64,41 @@ namespace adminlte.Controllers
                     }
                 }
                 throw;
+            } 
+            return null;
+        }
+        public JsonResult Delete(Tarefas tarefa)
+        {
+            //var delete = new Tarefas { TarefaId = id };
+
+            db.Tarefas.Attach(tarefa);
+            db.Tarefas.Remove(tarefa);
+            db.SaveChanges();
+
+            Response.Redirect(Url.Action("Index", "Tarefas"));
+
+            return null;
+        }   
+
+        public JsonResult EditForm(int id)
+        {
+            var tarefa = db.Tarefas.ToList().Where(x => x.TarefaId == id).FirstOrDefault();
+
+            return Json(tarefa, JsonRequestBehavior.AllowGet);
+        }
+
+        // POST: Tarefas/Edit/5
+        // Para se proteger de mais ataques, ative as propriedades específicas a que você quer se conectar. Para 
+        // obter mais detalhes, consulte https://go.microsoft.com/fwlink/?LinkId=317598.
+
+        public JsonResult Edit( Tarefas tarefas)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(tarefas).State = EntityState.Modified;
+                db.SaveChanges();
             }
+            Response.Redirect(Url.Action("Index", "Tarefas"));
             return null;
         }
     }

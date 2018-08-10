@@ -55,65 +55,168 @@ Layout = "~/Views/Shared/_Layout.cshtml";
         <br>
         <br>
       </form>
-    </section>
-<div class="row">
-            <div class="col-xs-12">
-                <div class="box">
-                  <div class="box-header">
-                        <h3 class="box-title">Tarefas Abertas</h3>
-                        <div class="box-tools">
-                            <div class="input-group input-group-sm" style="width: 150px;">
-                                <div class="input-group-btn">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- /.box-header -->
-                    <div class="box-body table-responsive no-padding">
-                        <table class="table table-hover" id="task_table">
-                            <tr>
-                                <th>Tarefa</th>
-                                <th>Robô</th>
-                                <th>Urgência</th>
-                                <th>Status</th>
-                            </tr>
-                        </table>
-                    </div>
-                    <!-- /.box-body -->
-                </div>
-                <!-- /.box -->
+    </div>
+  </section>
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="box">
+        <div class="box-header">
+          <h3 class="box-title">Tarefas Abertas</h3>
+          <div class="box-tools">
+            <div class="input-group input-group-sm" style="width: 150px;">
+              <div class="input-group-btn">
+              </div>
             </div>
+          </div>
         </div>
-    <!-- /.content -->
+        <!-- /.box-header -->
 
+        <div class="box-body table-responsive no-padding">
+          <table class="table table-hover" id="task_table">
+            <tr>
+              <th>ID</th>
+              <th>Tarefa</th>
+              <th>Robô</th>
+              <th>Urgência</th>
+              <th>Status</th>
+            </tr>
+          </table>
+        </div>
+        <!-- /.box-body -->
+      </div>
+      <!-- /.box -->
+    </div>
   </div>
-  <!-- /.content-wrapper -->
+  <!-- /.content -->
 
-  @section Scripts 
-  {
-    @Scripts.Render("~/bundles/dashboard1")
-  }
+</div>
+<!-- /.content-wrapper -->
+<div class="modal fade" id="modalEdit" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Editar Tarefa</h4>
+      </div>
+      <div class="modal-body">
+        <form action="/Tarefas/Edit" method="post">
+          <div class="box-body">
+            <div class="form-group">
+              <input class="form-control" type="hidden" name="tarefaid">
+            </div>
+            <div class="form-group">
+              <label>Tarefa</label>
+              <input type="text" class="form-control" name="tarefa">
+            </div>
+            <div class="form-group">
+              <label>Robô</label>
+              <select class="form-control" name="robo" placeholder="Robô">
+                <option disabled selected value></option>
+                <option>Montenegro</option>
+                <option>Nakazato</option>
+                <option>Pachequinho</option>
+                <option>Paladino</option>
+                <option>Qüekinem</option>
+                <option>SaiaJeans</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Urgência</label>
+              <select class="form-control" name="urgencia" placeholder="Urgência">
+                <option disabled selected value></option>
+                <option>Alta</option>
+                <option>Média</option>
+                <option>Baixa</option>
+              </select>
+            </div>  
+            <div class="form-group">
+              <label>Status</label>
+              <select class="form-control" name="status" placeholder="Status">
+                <option disabled selected value></option>
+                <option>Nova</option>
+                <option>Em Andamento</option>
+                <option>Resolvida</option>
+              </select>
+            </div>
+            <div class="box-footer">
+              <button type="submit"  class="btn btn-primary">Salvar</button>
+              <button type="button" data-dismiss="modal" class="btn btn-primary">Fechar</button>
+            </div>
+            <br>
+            <br>
+          </form>
+        </div>
+        <div class="modal-footer">
 
-  <script>
-    window.onload = function getAjaxes(){
-      $.ajax({
-        url: '@Url.Action("TaskList", "Tarefas")',
-        type: 'GET',
-        cache: false,
-        data: JSON.stringify(),
-        success: function(data){
-          var task_data = '';
-          $.each(data, function(key, value){
-            task_data += '<tr>';
-            task_data += '<td>' + value.Tarefa+'</td>';
-            task_data += '<td>' + value.Robo+'</td>';
-            task_data += '<td>' + value.Urgencia+'</td>';
-            task_data += '<td>' + value.Status+'</td>';
-            task_data += '</tr>';
+        </div>
+      </div>
+
+      @section Scripts 
+      {
+        @Scripts.Render("~/bundles/dashboard1")
+      }
+
+      <script>
+        window.onload = function getAjaxes(){
+          $.ajax({
+            url: '@Url.Action("TaskList", "Tarefas")',
+            type: 'GET',
+            cache: false,
+            data: JSON.stringify(),
+            success: function(data){
+              var task_data = '';
+              $.each(data, function(key, value){
+                task_data += '<tr>';
+                task_data += '<td>' + value.TarefaId+'</td>';
+                task_data += '<td>' + value.Tarefa+'</td>';
+                task_data += '<td>' + value.Robo+'</td>';
+                task_data += '<td>' + value.Urgencia+'</td>';
+                task_data += '<td>' + value.Status+'</td>';
+                task_data += '<td><button type="button" onclick="Edit(' + value.TarefaId + ')" data-toggle="modal" data-target="#modalEdit" class="btn btn-primary">Editar</button> <button type="submit" onclick="Delete(' + value.TarefaId + ')" class="btn btn-primary">Deletar</button></td>';
+                task_data += '</tr>';
+              });
+              $('#task_table').append(task_data);
+            }
           });
-          $('#task_table').append(task_data);
-        }
-      });
       //console.log(teste);
     }
+    function Delete(id){
+      $.ajax ({
+        type : "POST",
+        url : '@Url.Action("Delete", "Tarefas")',
+        data : {
+          tarefa: { 
+            TarefaId: id
+          }
+        },
+        dataType : "json",
+        success: function(){
+          window.location.reload();
+        }
+      });
+      window.location.reload();
+    }
+
+    function Edit(id){
+      $.ajax ({
+        type : "GET",
+        url : '@Url.Action("EditForm", "Tarefas")',
+        data : {id: id},
+        dataType : "json",
+        success: function(tarefa){
+          console.log(tarefa);
+          var modal = $('#modalEdit');
+
+          modal.find('[name="tarefaid"]').val(tarefa.TarefaId);
+          modal.find('[name="tarefa"]').val(tarefa.Tarefa);
+          modal.find('[name="robo"]').val(tarefa.Robo);
+          modal.find('[name="urgencia"]').val(tarefa.Urgencia);
+          modal.find('[name="status"]').val(tarefa.Status);
+
+        }
+      });
+      // window.location.reload();
+    }
+
+
   </script>

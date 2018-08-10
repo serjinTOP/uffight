@@ -89,13 +89,14 @@ Layout = "~/Views/Shared/_Layout.cshtml";
 
     function Delete(id){
         $.ajax ({
-        type : "POST",
-        url : '@Url.Action("Delete", "Eventos")',
-        data : {id: id},
-        dataType : "json",
-        success: function(){
-            location.reload();
-        }
-});
+            type : "POST",
+            url : '@Url.Action("Delete", "Eventos")',
+            data : {id: id},
+            dataType : "json",
+            success: function(){
+                window.location.reload();
+            }
+        });
+        window.location.reload();
     }
 </script>
