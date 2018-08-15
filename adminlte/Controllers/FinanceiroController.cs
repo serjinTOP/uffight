@@ -80,5 +80,23 @@ namespace adminlte.Controllers
 
             return null;
         }
+
+        public JsonResult EditForm(int id)
+        {
+            var financeiro = db.Financeiro.ToList().Where(x => x.FinanceiroId == id).FirstOrDefault();
+
+            return Json(financeiro, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult Edit(Financeiro financeiro)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(financeiro).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+            Response.Redirect(Url.Action("Index", "Financeiro"));
+            return null;
+        }
     }
 }

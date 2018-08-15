@@ -36,41 +36,79 @@ Layout = "~/Views/Shared/_Layout.cshtml";
 		</div>
 	</form>
 	<div class="row">
-            <div class="col-xs-12">
-                <div class="box">
-                  <div class="box-header">
-                        <h3 class="box-title">Movimentações Financeiras</h3>
-                        <div class="box-tools">
-                            <div class="input-group input-group-sm" style="width: 150px;">
-                                <div class="input-group-btn">
-                                </div>
-                            </div>
+        <div class="col-xs-12">
+            <div class="box">
+              <div class="box-header">
+                <h3 class="box-title">Movimentações Financeiras</h3>
+                <div class="box-tools">
+                    <div class="input-group input-group-sm" style="width: 150px;">
+                        <div class="input-group-btn">
                         </div>
                     </div>
-                    <!-- /.box-header -->
-                    <div class="box-body table-responsive no-padding">
-                        <table class="table table-hover" id="money_table">
-                            <tr>
-                                <th>ID</th>
-                                <th>Motivo</th>
-                                <th>Tipo</th>
-                                <th>Valor</th>
-                            </tr>
-                        </table>
-                    </div>
-                    <!-- /.box-body -->
                 </div>
-                <!-- /.box -->
             </div>
+            <!-- /.box-header -->
+            <div class="box-body table-responsive no-padding">
+                <table class="table table-hover" id="money_table">
+                    <tr>
+                        <th>ID</th>
+                        <th>Motivo</th>
+                        <th>Tipo</th>
+                        <th>Valor</th>
+                    </tr>
+                </table>
+            </div>
+            <!-- /.box-body -->
         </div>
-    <!-- /.content -->
+        <!-- /.box -->
+    </div>
+</div>
+<!-- /.content -->
 
-  </div>
-	<!-- /.content -->
+</div>
+<!-- /.content -->
 
 </div>
 <!-- /.content-wrapper -->
+<div class="modal fade" id="modalEdit" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Editar Tarefa</h4>
+    </div>
+    <div class="modal-body">
+        <form action="/Financeiro/Edit" method="post">
+            <div class="box-body">
+                <div class="form-group">
+                    <input class="form-control" type="hidden" name="financeiroid">
+              </div>
+              <div class="form-group">
+                <label>Valor</label>
+                <input type="number" step=".01" class="form-control" name="valor" placeholder="Valor">
+            </div>
+            <div class="form-group">
+                <label>Motivo</label>
+                <input type="text" class="form-control" name="motivo" placeholder="Motivo">
+            </div>
+            <div class="form-group">
+                <label>Tipo de Movimentação</label>
+                <select class="form-control" name="tipo" placeholder="Tipo">
+                    <option disabled selected value></option>
+                    <option>Entrada</option>
+                    <option>Saída</option>
+                </select>
+            </div> 
+            <div class="box-footer">
+                <button type="submit" class="btn btn-primary">Salvar</button>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
 
+</div>
+</div>
 @section Scripts 
 {
 	@Scripts.Render("~/bundles/dashboard1")
@@ -91,24 +129,44 @@ Layout = "~/Views/Shared/_Layout.cshtml";
             money_data += '<td>'  + value.Motivo+'</td>';
             money_data += '<td>'  + value.Tipo + '</td>';
             money_data += '<td>'+ 'R$ ' + value.Valor+'</td>';
-            money_data += '<td><button type="submit" onclick="Delete(' + value.FinanceiroId + ')" class="btn btn-primary">Deletar</button></td>';
+            money_data += '<td><button type="button" onclick="Edit(' + value.FinanceiroId + ')" data-toggle="modal" data-target="#modalEdit" class="btn btn-primary">Editar</button> <button type="submit" onclick="Delete(' + value.FinanceiroId + ')" class="btn btn-primary">Deletar</button></td>';
             money_data += '</tr>';
-          });
-          $('#money_table').append(money_data);
-        }
-      });
-      //console.log(teste);
-    }
-        function Delete(id){
-        $.ajax ({
-            type : "POST",
-            url : '@Url.Action("Delete", "Financeiro")',
-            data : {id: id},
-            dataType : "json",
-            success: function(){
-                window.location.reload();
-            }
         });
-        window.location.reload();
-    }
+          $('#money_table').append(money_data);
+      }
+  });
+      //console.log(teste);
+  }
+  function Delete(id){
+    $.ajax ({
+        type : "POST",
+        url : '@Url.Action("Delete", "Financeiro")',
+        data : {id: id},
+        dataType : "json",
+        success: function(){
+            window.location.reload();
+        }
+    });
+    window.location.reload();
+}
+
+function Edit(id){
+  $.ajax ({
+    type : "GET",
+    url : '@Url.Action("EditForm", "Financeiro")',
+    data : {id: id},
+    dataType : "json",
+    success: function(financeiro){
+      var modal = $('#modalEdit');
+
+      modal.find('[name="financeiroid"]').val(financeiro.FinanceiroId);
+      modal.find('[name="valor"]').val(financeiro.Valor);
+      modal.find('[name="motivo"]').val(financeiro.Motivo);
+      modal.find('[name="tipo"]').val(financeiro.Tipo);
+
+  }
+});
+      // window.location.reload();
+  }
+
 </script>

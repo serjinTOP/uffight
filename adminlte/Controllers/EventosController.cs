@@ -91,5 +91,23 @@ namespace adminlte.Controllers
             return null;
         }
 
+        public JsonResult EditForm(int id)
+        {
+            var eventos = db.Eventos.ToList().Where(x => x.EventosId == id).FirstOrDefault();
+
+            return Json(eventos, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult Edit(Eventos eventos)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(eventos).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+            Response.Redirect(Url.Action("Index", "Eventos"));
+            return null;
+        }
+
     }
 }
